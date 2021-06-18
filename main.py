@@ -3,7 +3,6 @@ import csv
 
 # listに楽曲データを追加
 def add_data_to_list(data_list, title, version, genre, difficulty, const, score):
-
     new_data = {}
     new_data['title'] = title
     new_data['version'] = version
@@ -27,18 +26,13 @@ def add_data_to_list(data_list, title, version, genre, difficulty, const, score)
     else:
         ratio = 0
 
-    # レーティング値を追加
-    if const != 'NA':
-        new_data['rating'] = format(const * ratio, '.2f')
-    else:
-        new_data['rating'] = 'NA'
+    new_data['rating'] = round(const * ratio, 2)
     
     data_list.append(new_data)
 
 
 # 定数・スコアを読み込んでlistを作成
 def make_list():
-
     # wacca_const.csvの読み込み
     # [title, version, genre, e_const, i_const]
     const_file = open('wacca_const.csv', 'r')
@@ -59,7 +53,7 @@ def make_list():
 
     data_list = []
 
-    for const in const_list:
+    for const in reversed(const_list):
         is_played = False
         for score in score_list:
             if const[0] == score[0]:
@@ -74,12 +68,12 @@ def make_list():
         if not is_played:
             add_data_to_list(data_list, const[0], const[1], const[2], 'EXP', float(const[3]), 0)
 
-    # 定数データのないスコアデータに対応
+    # 定数データのないスコアデータに対応 (定数を-1として処理)
     for score in score_list:
-        add_data_to_list(data_list, score[0], 'NA', 'NA', 'EXP', 'NA', int(score[3]))
+        add_data_to_list(data_list, score[0], 'NA', 'NA', 'EXP', -1, int(score[3]))
         if score[4] != '0':
             # infernoがある曲なのでさらに要素を追加
-            add_data_to_list(data_list, score[0], 'NA', 'NA', 'INF', 'NA', int(score[4]))
+            add_data_to_list(data_list, score[0], 'NA', 'NA', 'INF', -1, int(score[4]))
 
     return data_list
 
@@ -94,9 +88,46 @@ def print_list(list):
         print("\t{}\t{}\t{}\t{}\t{}\t{}\n".format(row['version'], row['genre'], row['difficulty'], row['const'], row['score'], row['rating']))
 
 
+# レート対象曲・候補曲を表示
+def show_ratings(data_list):
+    # プレイ済みの楽曲データを単曲レート降順でソート
+    rate_list = [data for data in data_list if data['score'] > 0 and data['const'] > 0]
+    rate_list = sorted(rate_list, key=lambda x: x['rating'], reverse=True)
+
+    new_value = 0
+    old_value = 0
+    new_list = []
+    old_list = []
+
+    for data in rate_list:
+        if data['version'] == 'R':
+            if len(new_list) < 15:
+                new_value += data['rating']
+                new_list.append(data)
+                data_list.remove(data)
+            else:
+                break
+    
+    for data in rate_list:
+        if data['version'] != 'R':
+            if len(old_list) < 35:
+                old_value += data['rating']
+                old_list.append(data)
+                data_list.remove(data)
+            else:
+                break
+
+    print("Rating: {:.3f}\n".format(new_value + old_value))
+    print("--- 新枠 対象曲 (average: {:.3f})\n".format(new_value / 15))
+    print_list(new_list)
+    print("--- 旧枠 対象曲 (average: {:.3f})\n".format(old_value / 35))
+    print_list(old_list)
+
+
+
 def main():
     data_list = make_list()
-    print_list(data_list)
+    show_ratings(data_list)
 
 
 if __name__ == "__main__":
