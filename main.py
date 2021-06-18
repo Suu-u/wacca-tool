@@ -66,9 +66,10 @@ def make_list():
                 score_list.remove(score)
                 break
         if not is_played:
+            # 未プレイなのでスコアを0にして要素を追加
             add_data_to_list(data_list, const[0], const[1], const[2], 'EXP', float(const[3]), 0)
 
-    # 定数データのないスコアデータに対応 (定数を-1として処理)
+    # 定数データのないスコアデータを定数を-1にして追加
     for score in score_list:
         add_data_to_list(data_list, score[0], 'NA', 'NA', 'EXP', -1, int(score[3]))
         if score[4] != '0':
@@ -98,30 +99,72 @@ def show_ratings(data_list):
     old_value = 0
     new_list = []
     old_list = []
+    new_candidate_list = []
+    old_candidate_list = []
 
+    # 新枠対象曲を追加
+    is_full_new = False
     for data in rate_list:
         if data['version'] == 'R':
             if len(new_list) < 15:
                 new_value += data['rating']
                 new_list.append(data)
-                data_list.remove(data)
+                rate_list.remove(data)
             else:
+                is_full_new = True
                 break
     
+    # 旧枠対象曲を追加
+    is_full_old = False
     for data in rate_list:
         if data['version'] != 'R':
             if len(old_list) < 35:
                 old_value += data['rating']
                 old_list.append(data)
-                data_list.remove(data)
+                rate_list.remove(data)
             else:
+                is_full_old = True
                 break
 
+    # 新枠候補曲を追加
+    if (is_full_new):
+        for data in rate_list:
+            if data['version'] == 'R' and data['score'] < 990000:
+                if len(new_candidate_list) < 10:
+                    new_candidate_list.append(data)
+                    rate_list.remove(data)
+                else:
+                    break
+    else:
+        # 新枠が埋まりきっていないので空データを追加
+        for i in range(len(new_list), 15):
+            add_data_to_list(new_list, "Not played", 'NA', 'NA', 'NA', 0, 0)
+
+    # 旧枠候補曲を追加
+    if (is_full_old):
+        for data in rate_list:
+            if data['version'] != 'R' and data['score'] < 990000:
+                if len(old_candidate_list) < 10:
+                    old_candidate_list.append(data)
+                    rate_list.remove(data)
+                else:
+                    break
+    else:
+        # 旧枠が埋まりきっていないので空データを追加
+        for i in range(len(old_list), 35):
+            add_data_to_list(old_list, "Not played", 'NA', 'NA', 'NA', 0, 0)
+
     print("Rating: {:.3f}\n".format(new_value + old_value))
-    print("--- 新枠 対象曲 (average: {:.3f})\n".format(new_value / 15))
+    print("--- 新枠 対象曲 (average: {:.3f})\n".format(new_value / len(new_list)))
     print_list(new_list)
-    print("--- 旧枠 対象曲 (average: {:.3f})\n".format(old_value / 35))
+    print("--- 旧枠 対象曲 (average: {:.3f})\n".format(old_value / len(old_list)))
     print_list(old_list)
+    print("--- 新枠 候補曲\n")
+    if (is_full_new):
+        print_list(new_candidate_list)
+    print("--- 旧枠 候補曲\n")
+    if (is_full_old):
+        print_list(old_candidate_list)
 
 
 
