@@ -1,5 +1,4 @@
 import csv
-import pprint ###
 
 
 # listに楽曲データを追加
@@ -66,32 +65,38 @@ def make_list():
             if const[0] == score[0]:
                 # プレイ済なので要素を追加
                 is_played = True
-                add_data_to_list(data_list, const[0], const[1], const[2], 'E', float(const[3]), int(score[3]))
+                add_data_to_list(data_list, const[0], const[1], const[2], 'EXP', float(const[3]), int(score[3]))
                 if const[4] != 'NA':
                     # infernoがある曲なのでさらに要素を追加
-                    add_data_to_list(data_list, const[0], const[1], const[2], 'I', float(const[4]), int(score[4]))
+                    add_data_to_list(data_list, const[0], const[1], const[2], 'INF', float(const[4]), int(score[4]))
                 score_list.remove(score)
                 break
         if not is_played:
-            add_data_to_list(data_list, const[0], const[1], const[2], 'E', float(const[3]), 0)
+            add_data_to_list(data_list, const[0], const[1], const[2], 'EXP', float(const[3]), 0)
 
     # 定数データのないスコアデータに対応
     for score in score_list:
-        add_data_to_list(data_list, score[0], 'NA', 'NA', 'E', 'NA', int(score[3]))
+        add_data_to_list(data_list, score[0], 'NA', 'NA', 'EXP', 'NA', int(score[3]))
         if score[4] != '0':
             # infernoがある曲なのでさらに要素を追加
-            add_data_to_list(data_list, score[0], 'NA', 'NA', 'I', 'NA', int(score[4]))
+            add_data_to_list(data_list, score[0], 'NA', 'NA', 'INF', 'NA', int(score[4]))
 
     return data_list
 
 
-# def print_list(list):
+# listの中身を整形して出力
+def print_list(list):
+    for row in list:
+        if row['difficulty'] == 'INF':
+            print(row['title'] + ' (INF)')
+        else:
+            print(row['title'])
+        print("\t{}\t{}\t{}\t{}\t{}\t{}\n".format(row['version'], row['genre'], row['difficulty'], row['const'], row['score'], row['rating']))
 
 
 def main():
     data_list = make_list()
-    for row in data_list:
-        print(row)
+    print_list(data_list)
 
 
 if __name__ == "__main__":
