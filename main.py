@@ -105,33 +105,26 @@ def show_ratings(data_list):
     # 新枠対象曲を追加
     is_full_new = False
     for data in tmp_list[:]:
-        print(data)
         if data['version'] == 'R':
             if len(new_list) < 15:
-                print("new_added")
                 new_value += data['rating']
                 new_list.append(data)
                 tmp_list.remove(data)
             else:
-                print("is_full_new")
                 is_full_new = True
                 break
-        print(len(tmp_list))
     
     # 旧枠対象曲を追加
     is_full_old = False
     for data in tmp_list[:]:
         if data['version'] != 'R':
             if len(old_list) < 35:
-                print("old_added")
                 old_value += data['rating']
                 old_list.append(data)
                 tmp_list.remove(data)
             else:
-                print("is_full_old")
                 is_full_old = True
                 break
-        print(len(tmp_list))
 
     # 新枠候補曲を追加
     if (is_full_new):
@@ -141,7 +134,6 @@ def show_ratings(data_list):
                     new_candidate_list.append(data)
                 else:
                     break
-            print(len(tmp_list))
     else:
         # 新枠が埋まりきっていないので空データを追加
         for i in range(len(new_list), 15):
@@ -155,7 +147,6 @@ def show_ratings(data_list):
                     old_candidate_list.append(data)
                 else:
                     break
-            print(len(tmp_list))
     else:
         # 旧枠が埋まりきっていないので空データを追加
         for i in range(len(old_list), 35):
