@@ -92,8 +92,10 @@ def print_list(list):
 # レート対象曲・候補曲を表示
 def show_ratings(data_list):
     # プレイ済みの楽曲データを単曲レート降順でソート
-    rate_list = [data for data in data_list if data['score'] > 0 and data['const'] > 0]
-    rate_list = sorted(rate_list, key=lambda x: x['rating'], reverse=True)
+    rate_list_tmp = [data for data in data_list if data['score'] > 0 and data['const'] > 0]
+    rate_list = sorted(rate_list_tmp, key=lambda x: x['rating'], reverse=True)
+
+    # print_list(rate_list)
 
     new_value = 0
     old_value = 0
@@ -109,7 +111,7 @@ def show_ratings(data_list):
             if len(new_list) < 15:
                 new_value += data['rating']
                 new_list.append(data)
-                rate_list.remove(data)
+                # rate_list.remove(data)
             else:
                 is_full_new = True
                 break
@@ -121,7 +123,7 @@ def show_ratings(data_list):
             if len(old_list) < 35:
                 old_value += data['rating']
                 old_list.append(data)
-                rate_list.remove(data)
+                # rate_list.remove(data)
             else:
                 is_full_old = True
                 break
@@ -132,7 +134,7 @@ def show_ratings(data_list):
             if data['version'] == 'R' and data['score'] < 990000:
                 if len(new_candidate_list) < 10:
                     new_candidate_list.append(data)
-                    rate_list.remove(data)
+                    # rate_list.remove(data)
                 else:
                     break
     else:
@@ -146,7 +148,7 @@ def show_ratings(data_list):
             if data['version'] != 'R' and data['score'] < 990000:
                 if len(old_candidate_list) < 10:
                     old_candidate_list.append(data)
-                    rate_list.remove(data)
+                    # rate_list.remove(data)
                 else:
                     break
     else:
