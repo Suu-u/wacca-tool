@@ -53,7 +53,7 @@ def make_list():
 
     data_list = []
 
-    for const in reversed(const_list):
+    for const in const_list:
         is_played = False
         for score in score_list:
             if const[0] == score[0]:
