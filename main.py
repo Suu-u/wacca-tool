@@ -21,13 +21,11 @@ def add_data_to_list(data_list, title, version, genre, difficulty, const, score)
         ratio = (score - 900000) // 20000 * 0.5 + 2
     elif score >= 800000:
         ratio = (score - 800000) // 50000 * 0.5 + 1
-    elif ratio > 0:
+    elif score > 0:
         ratio = score // 100000 * 0.1 + 0.1
-    else:
-        ratio = 0
 
     new_data['rating'] = round(const * ratio, 2)
-    
+
     data_list.append(new_data)
 
 
@@ -92,7 +90,7 @@ def print_list(list):
 # レート対象曲・候補曲を表示
 def show_ratings(data_list):
     # プレイ済みの楽曲データを単曲レート降順でソート
-    tmp_list = [data for data in data_list if data['score'] > 0 and data['const'] > 0]
+    tmp_list = [data for data in data_list if data['rating'] > 0]
     tmp_list = sorted(tmp_list, key=lambda x: x['rating'], reverse=True)
 
     new_value = 0
