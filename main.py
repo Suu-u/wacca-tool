@@ -33,7 +33,7 @@ def add_data_to_list(data_list, title, version, genre, difficulty, const, score)
 def make_list():
     # wacca_const.csvの読み込み
     # [title, version, genre, e_const, i_const]
-    const_file = open('wacca_const.csv', 'r')
+    const_file = open('wacca_const.csv', 'r', encoding='utf-8')
     fc = csv.reader(const_file)
     header = next(fc)
     const_list = []
@@ -42,7 +42,7 @@ def make_list():
 
     # wacca_score.csvの読み込み
     # [title, n_score, h_score, e_score, i_score]
-    score_file = open('wacca_score.csv', 'r')
+    score_file = open('wacca_score.csv', 'r', encoding='utf-8')
     fs = csv.reader(score_file)
     header = next(fs)
     score_list = []
