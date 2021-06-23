@@ -89,7 +89,9 @@ def make_list():
 # listの中身を整形して出力
 def print_list(list):
     for row in list:
-        if row['difficulty'] == 'INF':
+        if row['difficulty'] == 'HRD':
+            print(row['title'] + ' (HRD)')
+        elif row['difficulty'] == 'INF':
             print(row['title'] + ' (INF)')
         else:
             print(row['title'])
@@ -100,7 +102,7 @@ def print_list(list):
 def show_ratings(data_list):
     # プレイ済みの楽曲データを単曲レート降順でソート
     tmp_list = [data for data in data_list if data['rating'] > 0]
-    tmp_list = sorted(tmp_list, key=lambda x: x['rating'], reverse=True)
+    tmp_list = sorted(tmp_list, key=lambda x: (int)(x['rating']/0.1)*0.1, reverse=True)
 
     new_value = 0
     old_value = 0
