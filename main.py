@@ -32,7 +32,7 @@ def add_data_to_list(data_list, title, version, genre, difficulty, const, score)
 # 定数・スコアを読み込んでlistを作成
 def make_list():
     # wacca_const.csvの読み込み
-    # [title, version, genre, e_const, i_const]
+    # [title, version, genre, h_const, e_const, i_const]
     const_file = open('wacca_const.csv', 'r', encoding='utf-8')
     fc = csv.reader(const_file)
     header = next(fc)
@@ -57,21 +57,30 @@ def make_list():
             if const[0] == score[0]:
                 # プレイ済なので要素を追加
                 is_played = True
-                add_data_to_list(data_list, const[0], const[1], const[2], 'EXP', float(const[3]), int(score[3]))
-                if const[4] != 'NA':
-                    # infernoがある曲なのでさらに要素を追加
-                    add_data_to_list(data_list, const[0], const[1], const[2], 'INF', float(const[4]), int(score[4]))
+                if const[3] != 'NA': # hard
+                    add_data_to_list(data_list, const[0], const[1], const[2], 'HRD', float(const[3]), int(score[2]))
+                if const[4] != 'NA': # expert
+                    add_data_to_list(data_list, const[0], const[1], const[2], 'EXP', float(const[4]), int(score[3]))
+                if const[5] != 'NA': # inferno
+                    add_data_to_list(data_list, const[0], const[1], const[2], 'INF', float(const[5]), int(score[4]))
                 score_list.remove(score)
                 break
         if not is_played:
             # 未プレイなのでスコアを0にして要素を追加
-            add_data_to_list(data_list, const[0], const[1], const[2], 'EXP', float(const[3]), 0)
+            if const[3] != 'NA': # hard
+                add_data_to_list(data_list, const[0], const[1], const[2], 'HRD', float(const[3]), 0)
+            if const[4] != 'NA': # expert
+                add_data_to_list(data_list, const[0], const[1], const[2], 'EXP', float(const[4]), 0)
+            if const[5] != 'NA': # inferno
+                add_data_to_list(data_list, const[0], const[1], const[2], 'INF', float(const[5]), 0)
 
     # 定数データのないスコアデータを定数を-1にして追加
     for score in score_list:
-        add_data_to_list(data_list, score[0], 'NA', 'NA', 'EXP', -1, int(score[3]))
-        if score[4] != '0':
-            # infernoがある曲なのでさらに要素を追加
+        if score[2] != '0': # hard
+            add_data_to_list(data_list, score[0], 'NA', 'NA', 'HRD', -1, int(score[2]))
+        if score[3] != '0': # expert
+            add_data_to_list(data_list, score[0], 'NA', 'NA', 'EXP', -1, int(score[3]))
+        if score[4] != '0': # inferno
             add_data_to_list(data_list, score[0], 'NA', 'NA', 'INF', -1, int(score[4]))
 
     return data_list
@@ -80,7 +89,9 @@ def make_list():
 # listの中身を整形して出力
 def print_list(list):
     for row in list:
-        if row['difficulty'] == 'INF':
+        if row['difficulty'] == 'HRD':
+            print(row['title'] + ' (HRD)')
+        elif row['difficulty'] == 'INF':
             print(row['title'] + ' (INF)')
         else:
             print(row['title'])
@@ -91,7 +102,7 @@ def print_list(list):
 def show_ratings(data_list):
     # プレイ済みの楽曲データを単曲レート降順でソート
     tmp_list = [data for data in data_list if data['rating'] > 0]
-    tmp_list = sorted(tmp_list, key=lambda x: x['rating'], reverse=True)
+    tmp_list = sorted(tmp_list, key=lambda x: (int)(x['rating']/0.1)*0.1, reverse=True)
 
     new_value = 0
     old_value = 0
