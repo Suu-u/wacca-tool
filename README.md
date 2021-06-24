@@ -1,5 +1,7 @@
 # wacca-tool
 
+最終楽曲追加対応日：2021/06/24
+
 ## 使い方
 
 1. [こちら](https://github.com/saezurucrow/wacca-score-csv)のツールを用いてマイページサイトからCSVファイルを取得
