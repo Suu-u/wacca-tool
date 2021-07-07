@@ -41,6 +41,7 @@
 "Rainmaker",R,va,9.9,13.5,NA
 "SHAKE!",R,to,9.5,12.7,NA
 "Scream out!",R,th,8.1,12.8,NA
+"Sound Chimera",R,ta,NA,NA,13.9
 "Stasis",R,va,10.2,13.6,NA
 "Weg",R,va,8.6,12.3,NA
 "You are the Miserable",R,va,10,13.9,NA
@@ -105,6 +106,7 @@
 "Make it！",L,ap,5.1,9.4,NA
 "Make it！ (DJ Genki Remix)",L,ap,7.8,11.6,NA
 "ONOMATO Pairing!!!",L,to,8.5,12.4,NA
+"Quon",L,to,NA,NA,13.9
 "RAGE OF DUST",L,ap,8.4,9.6,NA
 "SUPER REACTOR",L,to,8.2,13,NA
 "THE MUZZLE FACING",L,or,9.8,13.7,NA
@@ -261,13 +263,13 @@
 "PARALLEL★PRISM",S,to,7.7,10.1,NA
 "POP TEAM EPIC",S,ap,7.8,11.4,NA
 "Poseidon",S,to,9.9,13.8,NA
-"Quon",S,to,10.6,12.8,13.9
+"Quon",S,to,10.6,12.8,NA
 "Rainbow Dream",S,to,8.7,11.4,NA
 "Seyana. ～何でも言うことを聞いてくれるアカネチャン～",S,vo,9.3,11.4,NA
 "Shining Harmony",S,ta,9.6,12.2,NA
 "Singin'☆Shine！",S,25,5.3,9.6,NA
 "Soldiers",S,ta,8.8,11.9,NA
-"Sound Chimera",S,ta,10.8,12.8,13.9
+"Sound Chimera",S,ta,10.8,12.8,NA
 "Sunshine",S,ta,8.2,11.3,NA
 "TOMORROW",S,ap,8,10.4,NA
 "Try again",S,ta,8.8,10.6,NA
