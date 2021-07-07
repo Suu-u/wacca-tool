@@ -108,35 +108,37 @@ def show_ratings(data_list):
     old_value = 0
     new_list = []
     old_list = []
+    new_list_len = 0
+    old_list_len = 0
     new_candidate_list = []
     old_candidate_list = []
 
     # 新枠対象曲を追加
-    is_full_new = False
     for data in tmp_list[:]:
         if data['version'] == 'R':
-            if len(new_list) < 15:
+            if new_list_len < 15:
                 new_value += data['rating']
                 new_list.append(data)
                 tmp_list.remove(data)
+                new_list_len += 1
             else:
                 is_full_new = True
                 break
     
     # 旧枠対象曲を追加
-    is_full_old = False
     for data in tmp_list[:]:
         if data['version'] != 'R':
-            if len(old_list) < 35:
+            if old_list_len < 35:
                 old_value += data['rating']
                 old_list.append(data)
                 tmp_list.remove(data)
+                old_list_len += 1
             else:
                 is_full_old = True
                 break
 
     # 新枠候補曲を追加
-    if (is_full_new):
+    if (new_list_len == 15):
         for data in tmp_list:
             if data['version'] == 'R' and data['score'] < 990000:
                 if len(new_candidate_list) < 10:
@@ -149,7 +151,7 @@ def show_ratings(data_list):
             add_data_to_list(new_list, "Not played", 'NA', 'NA', 'NA', 0, 0)
 
     # 旧枠候補曲を追加
-    if (is_full_old):
+    if (old_list_len == 35):
         for data in tmp_list:
             if data['version'] != 'R' and data['score'] < 990000:
                 if len(old_candidate_list) < 10:
@@ -162,15 +164,15 @@ def show_ratings(data_list):
             add_data_to_list(old_list, "Not played", 'NA', 'NA', 'NA', 0, 0)
 
     print("Rating: {:.3f}\n".format(new_value + old_value))
-    print("--- 新枠 対象曲 (average: {:.3f})\n".format(new_value / len(new_list)))
+    print("--- 新枠 対象曲 (average: {:.3f})\n".format(new_value / new_list_len))
     print_list(new_list)
-    print("--- 旧枠 対象曲 (average: {:.3f})\n".format(old_value / len(old_list)))
+    print("--- 旧枠 対象曲 (average: {:.3f})\n".format(old_value / old_list_len))
     print_list(old_list)
     print("--- 新枠 候補曲\n")
-    if (is_full_new):
+    if (new_list_len == 15):
         print_list(new_candidate_list)
     print("--- 旧枠 候補曲\n")
-    if (is_full_old):
+    if (old_list_len == 35):
         print_list(old_candidate_list)
 
 
