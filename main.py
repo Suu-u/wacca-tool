@@ -33,16 +33,29 @@ def add_data_to_list(data_list, title, version, genre, difficulty, const, score)
 # 定数・スコアを読み込んでlistを作成
 def make_list():
     # wacca_const.csvの読み込み
-    # [title, version, genre, h_const, e_const, i_const]
+    # CSV: title, version, genre, h_const, e_const, i_const, i_version
+    # これを、以下の構造のリストに整形して格納
+    # [title, genre, [version, h_const], [version, e_const], [version, i_const]]
     const_file = open('wacca_const.csv', 'r', encoding='utf-8')
     fc = csv.reader(const_file)
     header = next(fc)
     const_list = []
     for row in fc:
-        const_list.append(row)
+        new_data = [row[0], row[2]]
+        new_data.append([row[1], row[3]])
+        new_data.append([row[1], row[4]])
+        if row[5] != 'NA':
+            if row[6] != 'NA':
+                new_data.append([row[6], row[5]])
+            else:
+                new_data.append([row[1], row[5]])
+        else:
+            new_data.append('NA')
+        const_list.append(new_data)
 
     # wacca_score.csvの読み込み
-    # [title, n_score, h_score, e_score, i_score]
+    # CSV: title, n_score, h_score, e_score, i_score
+    # この順のままリストにして格納
     score_file = open('wacca_score.csv', 'r', encoding='utf-8')
     fs = csv.reader(score_file)
     header = next(fs)
