@@ -116,7 +116,7 @@ def show_ratings(data_list):
 
     # 新枠対象曲を追加
     for data in tmp_list[:]:
-        if data['version'] == 'R':
+        if data['version'] == 'Re':
             if new_list_len < 15:
                 new_value += data['rating']
                 new_list.append(data)
@@ -127,7 +127,7 @@ def show_ratings(data_list):
     
     # 旧枠対象曲を追加
     for data in tmp_list[:]:
-        if data['version'] != 'R':
+        if data['version'] != 'Re':
             if old_list_len < 35:
                 old_value += data['rating']
                 old_list.append(data)
@@ -139,7 +139,7 @@ def show_ratings(data_list):
     if (new_list_len == 15):
         # 新枠候補曲を追加
         for data in tmp_list:
-            if data['version'] == 'R' and data['score'] < 990000:
+            if data['version'] == 'Re' and data['score'] < 990000:
                 if len(new_candidate_list) < 10 and data['const'] * 4.0 >= new_list[14]['rating']:
                     new_candidate_list.append(data)
                 else:
@@ -152,7 +152,7 @@ def show_ratings(data_list):
     if (old_list_len == 35):
         # 旧枠候補曲を追加
         for data in tmp_list:
-            if data['version'] != 'R' and data['score'] < 990000:
+            if data['version'] != 'Re' and data['score'] < 990000:
                 if len(old_candidate_list) < 10 and data['const'] * 4.0 >= old_list[34]['rating']:
                     old_candidate_list.append(data)
                 else:
