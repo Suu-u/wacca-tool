@@ -2,12 +2,12 @@ import csv
 
 
 # listに楽曲データを追加
-def add_data_to_list(data_list, title, version, genre, difficulty, const, score):
+def add_data_to_list(data_list, title, genre, difficulty, version, const, score):
     new_data = {}
     new_data['title'] = title
-    new_data['version'] = version
     new_data['genre'] = genre
     new_data['difficulty'] = difficulty
+    new_data['version'] = version
     new_data['const'] = const
     new_data['score'] = score
 
@@ -33,16 +33,29 @@ def add_data_to_list(data_list, title, version, genre, difficulty, const, score)
 # 定数・スコアを読み込んでlistを作成
 def make_list():
     # wacca_const.csvの読み込み
-    # [title, version, genre, h_const, e_const, i_const]
+    # CSV: title, version, genre, h_const, e_const, i_const, i_version
+    # これを、以下の構造のリストに整形して格納
+    # [title, genre, [version, h_const], [version, e_const], [version, i_const]]
     const_file = open('wacca_const.csv', 'r', encoding='utf-8')
     fc = csv.reader(const_file)
     header = next(fc)
     const_list = []
     for row in fc:
-        const_list.append(row)
+        new_data = [row[0], row[2]]
+        new_data.append([row[1], row[3]])
+        new_data.append([row[1], row[4]])
+        if row[5] != 'NA':
+            if row[6] != 'NA':
+                new_data.append([row[6], row[5]])
+            else:
+                new_data.append([row[1], row[5]])
+        else:
+            new_data.append('NA')
+        const_list.append(new_data)
 
     # wacca_score.csvの読み込み
-    # [title, n_score, h_score, e_score, i_score]
+    # CSV: title, n_score, h_score, e_score, i_score
+    # この順のままリストにして格納
     score_file = open('wacca_score.csv', 'r', encoding='utf-8')
     fs = csv.reader(score_file)
     header = next(fs)
@@ -58,31 +71,31 @@ def make_list():
             if const[0] == score[0]:
                 # プレイ済なので要素を追加
                 is_played = True
-                if const[3] != 'NA': # hard
-                    add_data_to_list(data_list, const[0], const[1], const[2], 'HRD', float(const[3]), int(score[2]))
-                if const[4] != 'NA': # expert
-                    add_data_to_list(data_list, const[0], const[1], const[2], 'EXP', float(const[4]), int(score[3]))
-                if const[5] != 'NA': # inferno
-                    add_data_to_list(data_list, const[0], const[1], const[2], 'INF', float(const[5]), int(score[4]))
+                if const[2] != 'NA': # hard
+                    add_data_to_list(data_list, const[0], const[1], 'HRD', const[2][0], float(const[2][1]), int(score[2]))
+                if const[3] != 'NA': # expert
+                    add_data_to_list(data_list, const[0], const[1], 'EXP', const[3][0], float(const[3][1]), int(score[3]))
+                if const[4] != 'NA': # inferno
+                    add_data_to_list(data_list, const[0], const[1], 'INF', const[4][0], float(const[4][1]), int(score[4]))
                 score_list.remove(score)
                 break
         if not is_played:
             # 未プレイなのでスコアを0にして要素を追加
-            if const[3] != 'NA': # hard
-                add_data_to_list(data_list, const[0], const[1], const[2], 'HRD', float(const[3]), 0)
-            if const[4] != 'NA': # expert
-                add_data_to_list(data_list, const[0], const[1], const[2], 'EXP', float(const[4]), 0)
-            if const[5] != 'NA': # inferno
-                add_data_to_list(data_list, const[0], const[1], const[2], 'INF', float(const[5]), 0)
+            if const[2] != 'NA': # hard
+                add_data_to_list(data_list, const[0], const[1], 'HRD', const[2][0], float(const[2][1]), 0)
+            if const[3] != 'NA': # expert
+                add_data_to_list(data_list, const[0], const[1], 'EXP', const[3][0], float(const[3][1]), 0)
+            if const[4] != 'NA': # inferno
+                add_data_to_list(data_list, const[0], const[1], 'INF', const[4][0], float(const[4][1]), 0)
 
     # 定数データのないスコアデータを定数を-1にして追加
     for score in score_list:
         if score[2] != '0': # hard
-            add_data_to_list(data_list, score[0], 'NA', 'NA', 'HRD', -1, int(score[2]))
+            add_data_to_list(data_list, score[0], 'NA', 'HRD', 'NA', -1, int(score[2]))
         if score[3] != '0': # expert
-            add_data_to_list(data_list, score[0], 'NA', 'NA', 'EXP', -1, int(score[3]))
+            add_data_to_list(data_list, score[0], 'NA', 'EXP', 'NA', -1, int(score[3]))
         if score[4] != '0': # inferno
-            add_data_to_list(data_list, score[0], 'NA', 'NA', 'INF', -1, int(score[4]))
+            add_data_to_list(data_list, score[0], 'NA', 'INF', 'NA', -1, int(score[4]))
 
     return data_list
 
