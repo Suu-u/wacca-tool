@@ -176,10 +176,16 @@ def show_ratings(data_list):
             add_data_to_list(old_list, "Not played", 'NA', 'NA', 'NA', 0, 0)
 
     print("Rating: {:.3f}\n".format(new_value + old_value))
-    print("--- 新枠 対象曲 (average: {:.3f})\n".format(new_value / new_list_len))
-    print_list(new_list)
-    print("--- 旧枠 対象曲 (average: {:.3f})\n".format(old_value / old_list_len))
-    print_list(old_list)
+    if new_list_len != 0:
+        print("--- 新枠 対象曲 (average: {:.3f})\n".format(new_value / new_list_len))
+        print_list(new_list)
+    else:
+        print("--- 新枠 対象曲 (average: --)\n")
+    if old_list_len != 0:
+        print("--- 旧枠 対象曲 (average: {:.3f})\n".format(old_value / old_list_len))
+        print_list(old_list)
+    else:
+        print("--- 旧枠 対象曲 (average: --)\n")
     print("--- 新枠 候補曲\n")
     if (new_list_len == 15):
         print_list(new_candidate_list)
