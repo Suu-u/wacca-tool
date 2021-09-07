@@ -199,7 +199,7 @@ def main():
     data_list = make_list()
     show_list = data_list.copy()
     while True:
-        input_str = input()
+        input_str = input(">> ")
         run_command(input_str, show_list, data_list)
 
 
