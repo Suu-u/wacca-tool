@@ -1,5 +1,8 @@
 import csv
 
+VERSION = '1.2'
+UPDATE_DATE = '2021/09/05'
+
 
 # listに楽曲データを追加
 def add_data_to_list(data_list, title, genre, difficulty, version, const, score):
@@ -205,6 +208,7 @@ def show_ratings(data_list):
 
 
 def main():
+    print("WACCA Tool ver.{} (released on {})\n".format(VERSION, UPDATE_DATE))
     data_list = make_list()
     show_ratings(data_list)
 
