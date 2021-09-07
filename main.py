@@ -25,7 +25,10 @@ def add_data_to_list(data_list, title, genre, difficulty, version, const, score)
     else:
         ratio = 0
 
-    new_data['rating'] = round(const * ratio, 2)
+    if const != 'NA':
+        new_data['rating'] = round(const * ratio, 2)
+    else:
+        new_data['rating'] = 0
 
     data_list.append(new_data)
 
@@ -88,14 +91,20 @@ def make_list():
             if const[4] != 'NA': # inferno
                 add_data_to_list(data_list, const[0], const[1], 'INF', const[4][0], float(const[4][1]), 0)
 
-    # 定数データのないスコアデータを定数を-1にして追加
+    # 定数データのないスコアデータを定数を'NA'にして追加
+    no_const_num = 0
     for score in score_list:
         if score[2] != '0': # hard
-            add_data_to_list(data_list, score[0], 'NA', 'HRD', 'NA', -1, int(score[2]))
+            no_const_num += 1
+            add_data_to_list(data_list, score[0], 'NA', 'HRD', 'NA', 'NA', int(score[2]))
         if score[3] != '0': # expert
-            add_data_to_list(data_list, score[0], 'NA', 'EXP', 'NA', -1, int(score[3]))
+            no_const_num += 1
+            add_data_to_list(data_list, score[0], 'NA', 'EXP', 'NA', 'NA', int(score[3]))
         if score[4] != '0': # inferno
-            add_data_to_list(data_list, score[0], 'NA', 'INF', 'NA', -1, int(score[4]))
+            no_const_num += 1
+            add_data_to_list(data_list, score[0], 'NA', 'INF', 'NA', 'NA', int(score[4]))
+    if no_const_num > 0:
+        print("[NOTICE] {} song have no const data. Rating may be incorrect value. Please check if your 'wacca_const.csv' is the newest version.\n".format(no_const_num))
 
     return data_list
 
