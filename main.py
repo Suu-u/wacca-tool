@@ -1,7 +1,7 @@
 import csv
 
-VERSION = '1.2'
-UPDATE_DATE = '2021/09/05'
+VERSION = '1.2.1'
+UPDATE_DATE = '2021/09/09'
 
 
 # listに楽曲データを追加
