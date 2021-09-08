@@ -108,7 +108,7 @@ def make_list():
             no_const_num += 1
             add_data_to_list(data_list, score[0], 'NA', 'INF', 'NA', 'NA', int(score[4]))
     if no_const_num > 0:
-        print("[NOTICE] {} song have no const data. Rating may be incorrect value. Please check if your 'wacca_const.csv' is the newest version.\n".format(no_const_num))
+        print("[NOTICE] {} song have no const data. Rating may be incorrect value. Please check if your 'wacca_const.csv' and 'wacca_score.csv' are the newest version.".format(no_const_num))
 
     return data_list
 
@@ -227,7 +227,7 @@ def show_ratings(data_list):
 # -----------------------------------------------------------------------------
 
 def main():
-    print("WACCA Tool ver.{} (released on {})\n".format(VERSION, UPDATE_DATE))
+    print("WACCA Tool ver.{} (released on {})".format(VERSION, UPDATE_DATE))
     data_list = make_list()
     show_list = data_list.copy()
     while True:
