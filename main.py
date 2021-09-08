@@ -227,7 +227,7 @@ def show_ratings(data_list):
 # -----------------------------------------------------------------------------
 
 def main():
-    print("WACCA Tool ver.{} (released on {})\n".format(VERSION, UPDATE_DATE))
+    print("WACCA Tool ver.{} (released on {})".format(VERSION, UPDATE_DATE))
     data_list = make_list()
     show_list = data_list.copy()
     while True:
