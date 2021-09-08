@@ -3,6 +3,7 @@ import csv
 VERSION = '1.2.1'
 UPDATE_DATE = '2021/09/09'
 
+# -----------------------------------------------------------------------------
 
 # listに楽曲データを追加
 def add_data_to_list(data_list, title, genre, difficulty, version, const, score):
@@ -123,6 +124,24 @@ def print_list(list):
             print(row['title'])
         print("\t{}\t{}\t{}\t{}\t{}\t{}\n".format(row['version'], row['genre'], row['difficulty'], row['const'], row['score'], row['rating']))
 
+# -----------------------------------------------------------------------------
+
+# 入力されたコマンドを実行
+def run_command(input_str, show_list, data_list):
+    # 入力をコマンドと引数に分割
+    args = input_str.split(' ')
+    command = args.pop(0)
+
+    if command == "ratings":
+        show_ratings(data_list)
+    elif command == "show":
+        print_list(show_list)
+    elif command == "reset":
+        show_list = data_list.copy()
+    elif command == "quit":
+        exit(0)
+
+# -----------------------------------------------------------------------------
 
 # レート対象曲・候補曲を表示
 def show_ratings(data_list):
@@ -205,12 +224,15 @@ def show_ratings(data_list):
     if (old_list_len == 35):
         print_list(old_candidate_list)
 
-
+# -----------------------------------------------------------------------------
 
 def main():
     print("WACCA Tool ver.{} (released on {})\n".format(VERSION, UPDATE_DATE))
     data_list = make_list()
-    show_ratings(data_list)
+    show_list = data_list.copy()
+    while True:
+        input_str = input(">> ")
+        run_command(input_str, show_list, data_list)
 
 
 if __name__ == "__main__":
